@@ -4,6 +4,14 @@ A Windows desktop utility for fixing selected compatibility issues in GIMI / XXM
 
 **Version:** 4.1.0 | **Platform:** Windows 10/11 x64 | **Source:** Go + Wails v2 + React
 
+## Download
+
+- **Windows x64:** [Download ORFix Repair v4.1.0](https://github.com/wonidie66/ORFix-Repair/releases/download/v4.1.0/ORFixRepair_v4_1_0.exe)
+- **Release page:** [v4.1.0 release details and file information](https://github.com/wonidie66/ORFix-Repair/releases/tag/v4.1.0)
+- **SHA-256:** `315ce56d361a82d3536d8545887e2745af86c932fd2fd069420d6809b4be15db`
+
+The published executable is the maintainer-provided local Windows build. Its SHA-256 matches the v4.1.0 executable supplied for this release. The binary has not been independently or reproducibly built from the checked-in source snapshot.
+
 > This repository provides publicly reviewable, readable application source code. The maintainer reports compiling the Windows v4.1.0 executable locally; that binary has not been independently matched to this source snapshot. Historical status files in the archive predate the local compilation.
 
 ## Overview
