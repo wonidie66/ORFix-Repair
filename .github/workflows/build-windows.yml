@@ -1,0 +1,46 @@
+name: Build genuine Wails Windows EXE
+on:
+  workflow_dispatch:
+  push:
+    branches: [ main ]
+    paths:
+      - '**/*.go'
+      - 'go.mod'
+      - 'go.sum'
+      - 'frontend/dist/**'
+      - 'build/windows/**'
+      - 'wails.json'
+      - '.github/workflows/build-windows.yml'
+jobs:
+  build:
+    runs-on: windows-latest
+    permissions:
+      contents: read
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Install Go 1.26
+        uses: actions/setup-go@v5
+        with:
+          go-version: '1.26.x'
+          cache: false
+      - name: Engine tests
+        run: go test -count=1 ./engine
+      - name: Download Wails dependencies
+        run: go mod download
+      - name: Install Wails v2.17.1
+        run: go install github.com/wailsapp/wails/v2/cmd/wails@v2.17.1
+      - name: Build native EXE
+        shell: pwsh
+        run: |
+          $wails = Join-Path ((go env GOPATH).Trim()) 'bin/wails.exe'
+          & $wails build -platform windows/amd64 -s -clean
+          if ($LASTEXITCODE -ne 0) { throw 'Wails build failed' }
+          if (!(Test-Path 'build/bin/ORFixRepair_v4_1_0.exe')) { throw 'EXE missing' }
+          Get-FileHash -Algorithm SHA256 'build/bin/ORFixRepair_v4_1_0.exe'
+      - name: Upload real native EXE artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: ORFixRepair_v4_1_0_Wails_Windows_x64
+          path: build/bin/ORFixRepair_v4_1_0.exe
+          if-no-files-found: error

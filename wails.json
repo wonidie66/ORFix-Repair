@@ -1,0 +1,11 @@
+{
+  "name": "ORFix Repair V4.1.0",
+  "outputfilename": "ORFixRepair_v4_1_0",
+  "frontend:dir": "frontend",
+  "frontend:install": "",
+  "frontend:build": "",
+  "frontend:dev:watcher": "",
+  "author": {
+    "name": "ORFix Repair community tool"
+  }
+}

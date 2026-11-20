@@ -1,0 +1,11 @@
+{
+  "version": "V4.1.0",
+  "container": "Wails v2 native WebView2",
+  "wails_dependency": "v2.17.1",
+  "minimum_go": "1.26.0",
+  "windows_native_exe_compiled": false,
+  "reason": "Wails modules not installed and module registry DNS unavailable",
+  "edge_browser_launcher_included": false,
+  "engine_tests": "verified locally under Go1.23-compatible test module",
+  "frontend": "prebuilt embedded React/CSS + MIT SVG Liquid Glass"
+}

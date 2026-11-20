@@ -1,0 +1,40 @@
+﻿ORFix Repair V4.1.0 — 手动构建方法（Go 1.26.4）
+
+你已安装 Go 1.26.4，版本满足工程要求，不需要重新安装 Go。
+
+推荐方法：
+1. 把整个工程 ZIP 解压到一个简单路径，例如 C:\ORFixBuild\ORFixRepair_V4.1.0_Wails。
+2. 进入解压后的 ORFixRepair_V4.1.0_Wails 文件夹。
+3. 双击 BUILD_WAILS_WINDOWS.cmd。不要直接双击 PS1。
+4. 等待依赖下载、引擎测试、Wails CLI 安装和 Wails build 完成。首次构建需要网络。
+5. 成功文件：build\bin\ORFixRepair_v4_1_0.exe。
+6. 如果失败，窗口会停留并保存日志到 build\logs\wails-build-时间.log。请把完整错误或日志发回。
+
+如果 CMD 脚本仍然不起作用，可手动打开 CMD，逐行执行：
+
+cd /d C:\ORFixBuild\ORFixRepair_V4.1.0_Wails
+go version
+go env GOPROXY
+go mod download
+go test -count=1 ./engine
+go install github.com/wailsapp/wails/v2/cmd/wails@v2.17.1
+for /f "delims=" %G in ('go env GOPATH') do set "GOPATH=%G"
+"%GOPATH%\bin\wails.exe" build -platform windows/amd64 -s -clean
+
+dir build\bin\ORFixRepair_v4_1_0.exe
+
+注意：上面第一行 cd 路径必须替换成你实际解压目录。CMD 交互窗口中 for 命令使用单个 %G；如果写进另一个 .cmd 文件，则要改成 %%G。
+
+如果 go mod download 报 DNS、TLS、timeout 或 proxy 错误：
+- 这不是 Go 版本问题，而是 Go 模块仓库网络访问问题。
+- 先运行：go env GOPROXY
+- 默认可设置：go env -w GOPROXY=https://proxy.golang.org,direct
+- 如果当前网络无法访问官方代理，可按网络环境选择可信 Go 模块代理；不要随意下载不明来源的依赖压缩包。
+
+乱码原因与本次修复：
+- 旧 BUILD_WAILS_WINDOWS.ps1 是 UTF-8 无 BOM；Windows PowerShell 5.1 可能按系统 ANSI 编码读取，中文显示乱码。
+- 旧 BUILD_WAILS_WINDOWS.cmd 带 UTF-8 BOM；CMD 对 BOM 的处理不稳定。
+- 新版 PS1 已保存为 UTF-8 BOM；新版 CMD 为纯 ASCII、无 BOM。
+- 新版脚本会保留窗口、显示具体错误，并把完整输出保存到 build\logs。
+
+Wails 桌面程序使用 Windows WebView2 Runtime 在应用自己的窗口内渲染界面。这不等于启动 Edge 浏览器网页；任务管理器出现 msedgewebview2.exe 是正常现象。

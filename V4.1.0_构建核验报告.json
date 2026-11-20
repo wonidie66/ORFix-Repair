@@ -1,0 +1,23 @@
+{
+  "name": "ORFix Repair v4.1.0 Wails Desktop Source",
+  "status": "Source and Windows-build workflow ready; Wails Windows EXE not compiled in this environment",
+  "why_no_exe": "Go 1.23 available; Wails v2.17.1 requires Go >=1.26; Go module registry DNS not reachable; Windows host unavailable",
+  "wails_go_dependency": "github.com/wailsapp/wails/v2 v2.17.1",
+  "native_window_entry": "main.go -> wails.Run; no Edge launcher or localhost HTTP bridge",
+  "engine_source_byte_identical_to_V4.0.1": true,
+  "engine_file_count": 19,
+  "asset_count": 5,
+  "frontend_test": "React UI injected into Chromium sandbox; risk -> continue Face Fix -> log pane; no JS errors",
+  "engine_tests": "go test ./engine; go test -race ./engine; go vet ./engine: passed with local go1.23 test modfile",
+  "windows_engine_test": "GOOS=windows go test -c ./engine: passed; NOT Wails desktop executable",
+  "windows_wails_exe_built": false,
+  "build_instructions": "Run BUILD_WAILS_WINDOWS.cmd on Windows with Go 1.26+ and network; or run private GitHub Actions workflow",
+  "sha256": {
+    "main.go": "da211e5f5a44dbd3f22540896f12ff99ead3dd3e81ab1f03b04b61e15abb916c",
+    "app.go": "730f1aae3c01e35c26e0a294b7bf74a2754328f40267f5b7052fe85e2f4ddfc4",
+    "go.mod": "c3501a084bc53bc3d6c16f34fc720480e193fbf8b26f433e4927d7451cbc7f39",
+    "frontend/dist/app.js": "abbb1416b546cb3071b4635ae9b6e1fed4a48e7168961389468fb438689a6092",
+    "frontend/dist/style.css": "2951c10038073bee574609397253ebfc8146b5d6b30beaabefbe4c0e8ea85393",
+    "BUILD_WAILS_WINDOWS.ps1": "2ba6859108952b142bded487a68a020e8540698a4b8484e60e98d86dd8e07b8f"
+  }
+}
