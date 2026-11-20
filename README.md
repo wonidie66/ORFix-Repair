@@ -8,9 +8,9 @@ An open-source, local Windows tool for selected GIMI / XXMI Mod compatibility fi
 - [Release notes](https://github.com/wonidie66/ORFix-Repair/releases/tag/v4.1.2)
 - SHA-256: See the V4.1.2 GitHub Release page (generated from the published build).
 
-This EXE was built by a successful Windows GitHub Actions workflow from the published v4.1.2 source. It has not yet undergone full in-game testing on the user's Windows PC.
+The V4.1.2 release workflow passed the folder-path regression test and Go repair-engine tests, then built and published the Windows x64 EXE. Full in-game rendering verification is still a separate user-side check.
 
-**What's new in v4.1.2:** A persistent Chinese / English language switch in the existing desktop header. The original V4.1.0 layout and repair engine have not been redesigned. The UI language applies to buttons, statuses, dialogs, and on-screen diagnostics; paths and technical identifiers are preserved. Complex unrecognized diagnostics retain a pointer to the original saved log rather than inventing a translation.
+**What's new in v4.1.2:** Fixes a bug where an English UI could replace a selected folder path containing Chinese characters with a generic diagnostic message. Windows drive paths, UNC paths, POSIX absolute paths, and relative paths are now preserved verbatim. The Chinese / English switch, original V4.1.0 layout, and repair engine remain unchanged.
 
 ## Requirements
 - Windows 10/11 x64, Microsoft WebView2 Runtime.
