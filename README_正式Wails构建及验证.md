@@ -10,7 +10,7 @@ V4.1.2 在 V4.1.1 双语版本基础上修复中文目录路径在英文界面�
 
 ## 构建与验收状态
 
-V4.1.2 的 Windows EXE 由新发布工作流生成后，才可在下方记录 Release 地址、文件哈希和实际构建状态。
+V4.1.2 的 Windows EXE 已由 GitHub Actions 构建并发布，具体构建信息和校验值如下。
 
 - GitHub Actions workflow：`Publish ORFix Repair v4.1.2`
 - Workflow run：成功（`completed / success`），[查看运行记录](https://github.com/wonidie66/ORFix-Repair/actions/runs/44718946029)
