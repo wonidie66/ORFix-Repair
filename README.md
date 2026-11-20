@@ -2,6 +2,14 @@
 
 An open-source, local Windows tool for selected GIMI / XXMI Mod compatibility fixes.
 
+## Download v4.1.1
+
+- **[Windows x64 EXE](https://github.com/wonidie66/ORFix-Repair/releases/download/v4.1.1/ORFixRepair_v4_1_1.exe)**
+- [Release notes](https://github.com/wonidie66/ORFix-Repair/releases/tag/v4.1.1)
+- SHA-256: `825a8dfb14901643585eb3a2f9632fe1a907e26d551db2fb03b093c3fc42633d`
+
+This EXE was built by a successful Windows GitHub Actions workflow from the published v4.1.1 source. It has not yet undergone full in-game testing on the user's Windows PC.
+
 **What's new in v4.1.1:** A persistent Chinese / English language switch in the existing desktop header. The original V4.1.0 layout and repair engine have not been redesigned. The UI language applies to buttons, statuses, dialogs, and on-screen diagnostics; paths and technical identifiers are preserved. Complex unrecognized diagnostics retain a pointer to the original saved log rather than inventing a translation.
 
 ## Requirements
