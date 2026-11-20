@@ -79,6 +79,14 @@
   let language = 'zh';
   try { language = localStorage.getItem('orfix-language') === 'en' ? 'en' : 'zh'; } catch (_) {}
 
+  // Preserve filesystem paths verbatim. A valid folder name may contain CJK characters;
+  // those characters must never be mistaken for untranslated diagnostic text.
+  function isFileSystemPath(value) {
+    const candidate = String(value || '').trim();
+    return /^(?:[A-Za-z]:[\\/]|\\\\|\/|\.{1,2}[\\/])/.test(candidate)
+      || /^file:\/\//i.test(candidate);
+  }
+
   function translateText(value) {
     if (typeof value !== 'string' || language !== 'en') return value;
     // Preserve whitespace around individual React text nodes (e.g. count labels).
@@ -86,6 +94,8 @@
     if (!match) return value;
     const [, left, core, right] = match;
     if (!core || core === '中文') return value;
+    // Paths are data, not UI copy: keep the complete path even when it contains Chinese characters.
+    if (isFileSystemPath(core)) return value;
     if (Object.prototype.hasOwnProperty.call(dict, core)) return left + dict[core] + right;
     if (!/[\u3400-\u9fff]/.test(core)) return value;
     let m = core.match(/^(\d+) 条记录$/);
@@ -351,7 +361,7 @@
 
   function syncDocument() {
     document.documentElement.lang = language === 'en' ? 'en' : 'zh-CN';
-    document.title = language === 'en' ? 'ORFix Repair · English V4.1.1' : 'ORFix Repair · 中文 V4.1.1';
+    document.title = language === 'en' ? 'ORFix Repair · English V4.1.2' : 'ORFix Repair · 中文 V4.1.2';
   }
   syncDocument();
 
