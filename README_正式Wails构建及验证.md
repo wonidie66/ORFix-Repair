@@ -13,17 +13,17 @@ V4.1.2 在 V4.1.1 双语版本基础上修复中文目录路径在英文界面�
 V4.1.2 的 Windows EXE 由新发布工作流生成后，才可在下方记录 Release 地址、文件哈希和实际构建状态。
 
 - GitHub Actions workflow：`Publish ORFix Repair v4.1.2`
-- Workflow run：成功（`completed / success`）
+- Workflow run：成功（`completed / success`），[查看运行记录](https://github.com/wonidie66/ORFix-Repair/actions/runs/44718946029)
 - Windows 构建平台：`windows-latest`
 - Go：1.26.x
 - Wails：v2.17.1
 - EXE：`ORFixRepair_v4_1_2.exe`
-- PE：PE32+ Windows x86-64 GUI executable
-- Go build info：go1.26.10、GOOS=windows、GOARCH=amd64、desktop / wv2runtime.download / production tags
-- SHA-256：`825a8dfb14901643585eb3a2f9632fe1a907e26d551db2fb03b093c3fc42633d`
+- EXE 大小：12,393,472 bytes
+- SHA-256：`3d7315da4398a2401ef576eea693c308b23c64d7786565df2fd1efd2385fb68c`
+- 回归测试：Node.js 路径测试通过；Go 修复引擎测试通过
 - Release：<https://github.com/wonidie66/ORFix-Repair/releases/tag/v4.1.2>
 
-以上证明 Windows x64 Wails 构建已由 GitHub Actions 完成并发布。**它不等同于在用户的 Windows 设备上完成 GUI 交互验收，也不等同于游戏内 Mod 画面验收。**
+以上证明 V4.1.2 Windows x64 Wails 构建已由 GitHub Actions 完成并发布。**它不等同于在用户的 Windows 设备上完成 GUI 交互验收，也不等同于游戏内 Mod 画面验收。**
 
 ## 构建步骤（自行复现）
 
@@ -50,7 +50,7 @@ V4.1.2 的 Windows EXE 由新发布工作流生成后，才可在下方记录 Re
 
 ## 测试边界
 
-Chromium 自动化已覆盖初始页面、预览、回滚、面部风险、Face Fix 完成、正常修复成功、失败和重复失败等状态；9 个实际 UI 场景通过。localStorage 持久化检查在 about:blank 测试上下文受 SecurityError 限制，尚需在 Wails WebView 中实测。真实 Windows GUI、DPI 和游戏内渲染仍需设备验收。
+V4.1.1 Chromium 自动化覆盖初始页面、预览、回滚、面部风险、Face Fix 完成、正常修复成功、失败和重复失败等状态；9 个实际 UI 场景通过。V4.1.2 新增 Node.js 国际化回归测试，覆盖含中文字符的 Windows、UNC、POSIX 和相对路径，并确认普通 UI 文案仍可翻译；该测试与 Go 修复引擎测试均已通过 GitHub Actions。localStorage 持久化检查在 about:blank 测试上下文受 SecurityError 限制，尚需在 Wails WebView 中实测。真实 Windows GUI、DPI 和游戏内渲染仍需设备验收。
 
 ## 安全与第三方依赖
 
