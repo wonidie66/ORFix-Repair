@@ -1,0 +1,23 @@
+# Compiled outputs and local diagnostics
+/build/bin/
+/build/logs/
+*.exe
+*.test
+*.out
+*.log
+*.tmp
+*.bak
+ORFixRepair_*_rollback.json
+ORFixRepair_latest_rollback.json
+
+# Private environment/editor files
+.env
+.env.*
+!.env.example
+.idea/
+.vscode/
+.DS_Store
+Thumbs.db
+
+# Commit go.sum when generated
+!go.sum
