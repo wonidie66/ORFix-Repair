@@ -1,18 +1,18 @@
-ORFix Repair V4.1.1 — 手动构建方法（Go 1.26.4）
+ORFix Repair V4.1.2 — 手动构建方法（Go 1.26.4）
 
 你已安装 Go 1.26.4，版本满足工程要求，不需要重新安装 Go。
 
 推荐方法：
-1. 把整个工程 ZIP 解压到一个简单路径，例如 C:\ORFixBuild\ORFixRepair_V4.1.1_Wails。
-2. 进入解压后的 ORFixRepair_V4.1.1_Wails 文件夹。
+1. 把整个工程 ZIP 解压到一个简单路径，例如 C:\ORFixBuild\ORFixRepair_V4.1.2_Wails。
+2. 进入解压后的 ORFixRepair_V4.1.2_Wails 文件夹。
 3. 双击 BUILD_WAILS_WINDOWS.cmd。不要直接双击 PS1。
 4. 等待依赖下载、引擎测试、Wails CLI 安装和 Wails build 完成。首次构建需要网络。
-5. 成功文件：build\bin\ORFixRepair_v4_1_1.exe。
+5. 成功文件：build\bin\ORFixRepair_v4_1_2.exe。
 6. 如果失败，窗口会停留并保存日志到 build\logs\wails-build-时间.log。请把完整错误或日志发回。
 
 如果 CMD 脚本仍然不起作用，可手动打开 CMD，逐行执行：
 
-cd /d C:\ORFixBuild\ORFixRepair_V4.1.1_Wails
+cd /d C:\ORFixBuild\ORFixRepair_V4.1.2_Wails
 go version
 go env GOPROXY
 go mod download
@@ -21,7 +21,7 @@ go install github.com/wailsapp/wails/v2/cmd/wails@v2.17.1
 for /f "delims=" %G in ('go env GOPATH') do set "GOPATH=%G"
 "%GOPATH%\bin\wails.exe" build -platform windows/amd64 -s -clean
 
-dir build\bin\ORFixRepair_v4_1_1.exe
+dir build\bin\ORFixRepair_v4_1_2.exe
 
 注意：上面第一行 cd 路径必须替换成你实际解压目录。CMD 交互窗口中 for 命令使用单个 %G；如果写进另一个 .cmd 文件，则要改成 %%G。
 
