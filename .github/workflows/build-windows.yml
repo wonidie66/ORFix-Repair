@@ -48,7 +48,7 @@ jobs:
         shell: pwsh
         run: |
           New-Item -ItemType Directory -Force -Path 'build/source' | Out-Null
-          git archive --format=zip --output='build/source/ORFixRepair_V4.1.2_Source.zip' HEAD
+          git archive --format=zip --output='build/source/ORFixRepair_V4.1.2_Source.zip' refs/tags/v4.1.2
           if (!(Test-Path 'build/source/ORFixRepair_V4.1.2_Source.zip')) { throw 'Source archive missing' }
       - name: Upload source archive
         uses: actions/upload-artifact@v4
