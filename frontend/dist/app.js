@@ -1,8 +1,9 @@
-/* ORFix Repair V4.0 – React UI. No JSX/transpiler required in shipped bundle.
+/* ORFix Repair V4.1.1 – React UI. No JSX/transpiler required in shipped bundle.
    Wails calls go.main.App; a browser falls back to explicit simulation mode. */
 (function () {
   'use strict';
-  const h = React.createElement;
+  const i18n = window.ORFixI18n;
+  const h = i18n ? i18n.createElement : React.createElement;
   const Glass = window.ORFixLiquidGlass;
   const demo = !(window.go && window.go.main && window.go.main.App);
   const bridge = demo ? null : window.go.main.App;
@@ -61,14 +62,21 @@
   class App extends React.Component {
     constructor(props){
       super(props);
-      this.state={folder:demo?'C:\\Games\\GIMI\\Mods':'',phase:'idle',result:null,logsOpen:false,scenario:'risk',error:'',busy:false};
+      this.state={folder:demo?'C:\\Games\\GIMI\\Mods':'',phase:'idle',result:null,logsOpen:false,scenario:'risk',error:'',busy:false,i18nLang:i18n.getLanguage()};
     }
-    componentDidMount(){if(bridge&&bridge.DefaultFolder)bridge.DefaultFolder().then(x=>x&&this.setState({folder:x})).catch(()=>{});}
+    componentDidMount(){
+      this.onLanguageChange=()=>this.setState({i18nLang:i18n.getLanguage()});
+      window.addEventListener('orfix-language-changed',this.onLanguageChange);
+      if(bridge&&bridge.DefaultFolder)bridge.DefaultFolder().then(x=>x&&this.setState({folder:x})).catch(()=>{});
+    }
+    componentWillUnmount(){
+      window.removeEventListener('orfix-language-changed',this.onLanguageChange);
+    }
     async selectFolder(){
       const {busy,phase,folder}=this.state;
       if(busy||phase==='risk')return;
       if(demo){const value=prompt('交互演示：请输入展示用 Mod 目录（不会访问文件）',folder);if(value)this.setState({folder:value});return;}
-      try{const val=await bridge.SelectDirectory();if(val)this.setState({folder:val});}catch(e){this.setState({error:'选择目录失败：'+String(e)});}
+      try{const val=await bridge.SelectDirectory(i18n.getLanguage());if(val)this.setState({folder:val});}catch(e){this.setState({error:'选择目录失败：'+String(e)});}
     }
     async execute(action){
       const {busy,folder,scenario}=this.state;
@@ -118,9 +126,18 @@
         h('header',{className:'app-header'},
           h('div',{className:'brand'},
             h('img',{src:image('logo'),alt:'ORFix',className:'brand-logo'}),
-            h('div',{className:'brand-text'},h('strong',null,'ORFix Repair'),h('small',null,'V4.1.0'))),
-          demo ? h('details',{className:'demo-options header-demo'},h('summary',null,'切换演示结果'),h('div',{className:'demo-picks'},
-            [['success','普通成功'],['risk','疑似面部风险'],['failed','修复失败']].map(([v,lab])=>h('button',{key:v,className:scenario===v?'selected':'',onClick:()=>this.setState({scenario:v,phase:'idle',result:null,logsOpen:false})},lab)))) : null
+            h('div',{className:'brand-text'},h('strong',null,'ORFix Repair'),h('small',null,'V4.1.1'))),
+          h('div',{className:'header-tools'},
+            demo ? h('details',{className:'demo-options header-demo'},h('summary',null,'切换演示结果'),h('div',{className:'demo-picks'},
+              [['success','普通成功'],['risk','疑似面部风险'],['failed','修复失败']].map(([v,lab])=>h('button',{key:v,className:scenario===v?'selected':'',onClick:()=>this.setState({scenario:v,phase:'idle',result:null,logsOpen:false})},lab)))) : null,
+            h('div',{className:'orfix-language-toggle',id:'orfix-language-toggle'},
+              h('img',{className:'orfix-language-icon',src:'./language.svg',alt:''}),
+              h('div',{className:'orfix-language-segments'},
+                h('button',{type:'button','data-lang':'zh',className:i18n.getLanguage()==='zh'?'active':'',onClick:()=>i18n.setLanguage('zh')},'中文'),
+                h('button',{type:'button','data-lang':'en',className:i18n.getLanguage()==='en'?'active':'',onClick:()=>i18n.setLanguage('en')},'EN')
+              )
+            )
+          )
         ),
         h('div',{className:'content'+(logsOpen?' logs-mode':'')},
           h('div',{className:'section-header'},h('h1',null,'修复 Mod 贴图与兼容问题')),

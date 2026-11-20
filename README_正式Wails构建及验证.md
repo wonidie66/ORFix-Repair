@@ -1,4 +1,4 @@
-﻿# ORFix Repair V4.1.0 — 真实 Wails 桌面工程
+# ORFix Repair V4.1.1 — 真实 Wails 桌面工程
 
 ## 本次变更
 
@@ -16,7 +16,7 @@
 2. 确保网络允许访问 Go 模块仓库，系统具有 WebView2 Runtime。
 3. 解压完整工程到纯英文路径（可减少旧工具链路径问题），双击 `BUILD_WAILS_WINDOWS.cmd`；或者在 PowerShell 中运行 `./BUILD_WAILS_WINDOWS.ps1`。
 4. 推荐双击 `BUILD_WAILS_WINDOWS.cmd`，不要直接双击 PS1。新版 CMD 无 BOM、PS1 为 UTF-8 BOM，且会保留错误窗口并生成 `build/logs` 日志。也可参考 `BUILD_MANUAL_中文说明.txt` 逐条手动构建。
-5. 编译结束后检查 `build/bin/ORFixRepair_v4_1_0.exe`，并在 Windows 上启动。屏幕应出现带标题栏的 **ORFix Repair** 原生窗口，不能出现 Edge 标签页、地址栏或 `localhost` URL。
+5. 编译结束后检查 `build/bin/ORFixRepair_v4_1_1.exe`，并在 Windows 上启动。屏幕应出现带标题栏的 **ORFix Repair** 原生窗口，不能出现 Edge 标签页、地址栏或 `localhost` URL。
 6. Windows 任务管理器可能出现 `msedgewebview2.exe` 子进程，这是 WebView2 运行时正常行为，不等于 EXE 在浏览器中打开网页。
 
 ## GitHub Actions 构建（无需本机安装 Go）

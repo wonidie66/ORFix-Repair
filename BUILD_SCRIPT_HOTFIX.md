@@ -1,4 +1,4 @@
-﻿# 构建脚本修正说明
+# 构建脚本修正说明
 
 已确认旧脚本存在编码隐患：PS1 为 UTF-8 无 BOM，Windows PowerShell 5.1 可能按 ANSI 解码，造成中文乱码；CMD 文件带 UTF-8 BOM，CMD 对 BOM 处理不稳定。
 

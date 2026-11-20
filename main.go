@@ -18,7 +18,7 @@ var frontend embed.FS
 func main() {
 	app := NewApp()
 	err := wails.Run(&options.App{
-		Title:            "ORFix Repair v4.1.0",
+		Title:            "ORFix Repair v4.1.1",
 		Width:            830,
 		Height:           570,
 		MinWidth:         780,

@@ -32,7 +32,7 @@ try {
     Start-Transcript -Path $logFile -Force | Out-Null
     $transcriptStarted = $true
 
-    Write-Host 'ORFix Repair V4.1.0 | Wails 原生 Windows 桌面版构建' -ForegroundColor Cyan
+    Write-Host 'ORFix Repair V4.1.1 | Wails 原生 Windows 桌面版构建' -ForegroundColor Cyan
     Write-Host "工程目录：$PSScriptRoot"
     Write-Host "日志文件：$logFile"
 
@@ -73,7 +73,7 @@ try {
 
     Invoke-Native -Executable $wailsExe -Arguments @('build','-platform','windows/amd64','-s','-clean') -Step '4/4 构建 Wails 原生桌面 EXE'
 
-    $exe = Join-Path $PSScriptRoot 'build\bin\ORFixRepair_v4_1_0.exe'
+    $exe = Join-Path $PSScriptRoot 'build\bin\ORFixRepair_v4_1_1.exe'
     if (-not (Test-Path -LiteralPath $exe)) {
         throw "Wails 命令结束但未找到预期文件：$exe。请检查 build\bin 目录和日志。"
     }

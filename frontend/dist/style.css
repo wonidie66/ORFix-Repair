@@ -64,3 +64,20 @@ button, input { font-family:inherit; }
   .content.logs-mode .log-panel { min-height:100px; }
   .header-demo summary { padding:8px; }
 }
+
+
+/* Offline preview only: compact language control added to the existing header. */
+.app-header { gap: 10px; }
+.header-demo { margin-left: auto; }
+.orfix-language-toggle { display:flex; align-items:center; gap:7px; flex:0 0 auto; padding:5px 6px 5px 8px; border:1px solid rgba(130,172,218,.30); border-radius:15px; background:linear-gradient(145deg,rgba(255,255,255,.88),rgba(238,247,255,.60)); box-shadow:0 3px 10px rgba(46,105,180,.07),inset 0 1px 0 rgba(255,255,255,.95); }
+.orfix-language-icon { width:20px; height:20px; object-fit:contain; opacity:.92; flex:0 0 20px; }
+.orfix-language-segments { display:flex; align-items:center; gap:3px; }
+.orfix-language-segments button { height:28px; min-width:37px; padding:0 9px; border:0; border-radius:9px; background:transparent; color:#7188a2; font-size:12px; font-weight:700; line-height:28px; transition:background .16s ease,color .16s ease,box-shadow .16s ease; }
+.orfix-language-segments button.active { color:#fff; background:linear-gradient(118deg,#3693ff 0%,#226fec 100%); box-shadow:0 3px 8px rgba(36,113,228,.20),inset 0 1px 0 rgba(255,255,255,.24); }
+.orfix-language-segments button:focus-visible { outline:2px solid #83baff; outline-offset:2px; }
+@media(max-width:650px){ .app-header { padding-left:14px; padding-right:14px; gap:6px; } .orfix-language-toggle { gap:4px; padding:4px; } .orfix-language-icon { width:17px; height:17px; flex-basis:17px; } .orfix-language-segments button { min-width:31px; padding:0 6px; font-size:11px; } }
+
+/* Position the single language control in the original header without changing the page layout. */
+.header-tools { display:flex; align-items:center; gap:12px; margin-left:auto; flex:0 0 auto; min-width:0; }
+.header-tools .header-demo { margin-left:0; }
+@media(max-width:650px) { .header-tools { gap:5px; } }

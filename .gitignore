@@ -1,16 +1,10 @@
-# Compiled outputs and local diagnostics
-/build/bin/
-/build/logs/
+build/bin/
+build/logs/
 *.exe
 *.test
-*.out
 *.log
-*.tmp
 *.bak
-ORFixRepair_*_rollback.json
-ORFixRepair_latest_rollback.json
-
-# Private environment/editor files
+*.tmp
 .env
 .env.*
 !.env.example
@@ -18,6 +12,3 @@ ORFixRepair_latest_rollback.json
 .vscode/
 .DS_Store
 Thumbs.db
-
-# Commit go.sum when generated
-!go.sum

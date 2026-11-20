@@ -50,12 +50,21 @@ func (a *App) DefaultFolder() string {
 	return filepath.Dir(path)
 }
 
-func (a *App) SelectDirectory() (string, error) {
+func (a *App) SelectDirectory(language string) (string, error) {
 	a.mu.Lock()
 	defer a.mu.Unlock()
-	if a.pending { return "", errors.New("请先完成当前面部检查，再更换目录") }
-	if a.ctx == nil {return "", errors.New("Wails 窗口尚未初始化")}
-	return runtime.OpenDirectoryDialog(a.ctx, runtime.OpenDialogOptions{Title: "选择 GIMI Mod 文件夹",DefaultDirectory:a.DefaultFolder()})
+	english := language == "en"
+	if a.pending {
+		if english { return "", errors.New("Finish the current face check before changing folders") }
+		return "", errors.New("请先完成当前面部检查，再更换目录")
+	}
+	if a.ctx == nil {
+		if english { return "", errors.New("Wails window is not initialized") }
+		return "", errors.New("Wails 窗口尚未初始化")
+	}
+	title := "选择 GIMI Mod 文件夹"
+	if english { title = "Select GIMI Mod Folder" }
+	return runtime.OpenDirectoryDialog(a.ctx, runtime.OpenDialogOptions{Title: title,DefaultDirectory:a.DefaultFolder()})
 }
 
 func (a *App) RunNormal(folder string) (Response,error) {

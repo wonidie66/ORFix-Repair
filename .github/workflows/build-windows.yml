@@ -1,4 +1,4 @@
-name: Build genuine Wails Windows EXE
+name: Build ORFix Repair Windows EXE
 on:
   workflow_dispatch:
   push:
@@ -36,11 +36,11 @@ jobs:
           $wails = Join-Path ((go env GOPATH).Trim()) 'bin/wails.exe'
           & $wails build -platform windows/amd64 -s -clean
           if ($LASTEXITCODE -ne 0) { throw 'Wails build failed' }
-          if (!(Test-Path 'build/bin/ORFixRepair_v4_1_0.exe')) { throw 'EXE missing' }
-          Get-FileHash -Algorithm SHA256 'build/bin/ORFixRepair_v4_1_0.exe'
+          if (!(Test-Path 'build/bin/ORFixRepair_v4_1_1.exe')) { throw 'EXE missing' }
+          Get-FileHash -Algorithm SHA256 'build/bin/ORFixRepair_v4_1_1.exe'
       - name: Upload real native EXE artifact
         uses: actions/upload-artifact@v4
         with:
-          name: ORFixRepair_v4_1_0_Wails_Windows_x64
-          path: build/bin/ORFixRepair_v4_1_0.exe
+          name: ORFixRepair_v4_1_1_Wails_Windows_x64
+          path: build/bin/ORFixRepair_v4_1_1.exe
           if-no-files-found: error
