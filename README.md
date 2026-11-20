@@ -1,16 +1,16 @@
-# ORFix Repair v4.1.1 — Bilingual Windows build
+# ORFix Repair v4.1.2 — Bilingual Windows build
 
 An open-source, local Windows tool for selected GIMI / XXMI Mod compatibility fixes.
 
-## Download v4.1.1
+## Download v4.1.2
 
-- **[Windows x64 EXE](https://github.com/wonidie66/ORFix-Repair/releases/download/v4.1.1/ORFixRepair_v4_1_1.exe)**
-- [Release notes](https://github.com/wonidie66/ORFix-Repair/releases/tag/v4.1.1)
-- SHA-256: `825a8dfb14901643585eb3a2f9632fe1a907e26d551db2fb03b093c3fc42633d`
+- **[Windows x64 EXE](https://github.com/wonidie66/ORFix-Repair/releases/download/v4.1.2/ORFixRepair_v4_1_2.exe)**
+- [Release notes](https://github.com/wonidie66/ORFix-Repair/releases/tag/v4.1.2)
+- SHA-256: See the V4.1.2 GitHub Release page (generated from the published build).
 
-This EXE was built by a successful Windows GitHub Actions workflow from the published v4.1.1 source. It has not yet undergone full in-game testing on the user's Windows PC.
+This EXE was built by a successful Windows GitHub Actions workflow from the published v4.1.2 source. It has not yet undergone full in-game testing on the user's Windows PC.
 
-**What's new in v4.1.1:** A persistent Chinese / English language switch in the existing desktop header. The original V4.1.0 layout and repair engine have not been redesigned. The UI language applies to buttons, statuses, dialogs, and on-screen diagnostics; paths and technical identifiers are preserved. Complex unrecognized diagnostics retain a pointer to the original saved log rather than inventing a translation.
+**What's new in v4.1.2:** A persistent Chinese / English language switch in the existing desktop header. The original V4.1.0 layout and repair engine have not been redesigned. The UI language applies to buttons, statuses, dialogs, and on-screen diagnostics; paths and technical identifiers are preserved. Complex unrecognized diagnostics retain a pointer to the original saved log rather than inventing a translation.
 
 ## Requirements
 - Windows 10/11 x64, Microsoft WebView2 Runtime.
@@ -28,7 +28,7 @@ This EXE was built by a successful Windows GitHub Actions workflow from the publ
 Press **中文** or **EN** in the top-right header at any time. Preference is stored in the local WebView profile. The language switch affects the application UI, not Mod files or the repair engine's saved raw logs. System file-dialog chrome can follow the Windows display language.
 
 ## Build
-Go 1.26+, Wails v2.17.1. Prebuilt frontend assets are in `frontend/dist/`; see `BUILD_MANUAL_中文说明.txt` or `BUILD_WAILS_WINDOWS.cmd`. Output: `build/bin/ORFixRepair_v4_1_1.exe`.
+Go 1.26+, Wails v2.17.1. Prebuilt frontend assets are in `frontend/dist/`; see `BUILD_MANUAL_中文说明.txt` or `BUILD_WAILS_WINDOWS.cmd`. Output: `build/bin/ORFixRepair_v4_1_2.exe`.
 
 ## Source structure
 - `main.go`, `app.go` — Wails host and bridge.
