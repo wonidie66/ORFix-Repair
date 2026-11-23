@@ -1,0 +1,94 @@
+name: Publish ORFix Repair v4.2.0
+
+on:
+  push:
+    branches: [ main ]
+    paths:
+      - '.github/workflows/publish-v4.2.0.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  publish:
+    runs-on: windows-latest
+    steps:
+      - name: Checkout release source
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      - name: Set up Go
+        uses: actions/setup-go@v5
+        with:
+          go-version: '1.26.4'
+          cache: false
+
+      - name: Run release regression tests
+        shell: pwsh
+        run: |
+          node frontend/tests/language.test.cjs
+          if ($LASTEXITCODE -ne 0) { throw 'Frontend regression tests failed.' }
+          go mod download
+          if ($LASTEXITCODE -ne 0) { throw 'Go module download failed.' }
+          go test -count=1 ./engine
+          if ($LASTEXITCODE -ne 0) { throw 'Go engine tests failed.' }
+          go vet ./engine
+          if ($LASTEXITCODE -ne 0) { throw 'Go vet failed.' }
+
+      - name: Download and verify user-tested Windows EXE
+        shell: pwsh
+        env:
+          EXE_DOWNLOAD_URL: 'https://sdmntprindiasocentral.oaiusercontent.com/files/00000000-8d48-8211-97b3-dbd76e963fbd/raw?se=2026-11-23T19%3A21%3A11Z&sp=r&sv=2026-06-06&sr=b&scid=ead09f87-f108-534c-af09-cfe4be2184f2&skoid=54865dd2-31dc-44cc-a877-635aa4250446&sktid=a48cca56-e6da-484e-a814-9c849652bcb3&skt=2026-11-23T03%3A22%3A24Z&ske=2026-11-24T03%3A22%3A24Z&sks=b&skv=2026-06-06&sig=H4ThYD2pLDXOIuosTsZfaXhaAjkm20AE119NOxKDEa4%3D'
+          EXPECTED_SHA256: '84b13d2a1e21299afb7ff4d255a4a203e6d628caa9fc19176bc2e445de9e8988'
+        run: |
+          $exe = 'build/bin/ORFixRepair_v4_2_0.exe'
+          New-Item -ItemType Directory -Force -Path 'build/bin' | Out-Null
+          Invoke-WebRequest -Uri $env:EXE_DOWNLOAD_URL -OutFile $exe
+          $actual = (Get-FileHash -LiteralPath $exe -Algorithm SHA256).Hash.ToLowerInvariant()
+          if ($actual -ne $env:EXPECTED_SHA256) {
+            throw "EXE SHA-256 mismatch. Expected $env:EXPECTED_SHA256, got $actual"
+          }
+          "$actual  ORFixRepair_v4_2_0.exe" | Set-Content -LiteralPath 'build/bin/ORFixRepair_v4_2_0.exe.sha256' -Encoding ascii
+          Write-Host "Verified user-tested EXE: $actual"
+
+      - name: Create GitHub Release
+        shell: pwsh
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh release view v4.2.0 *> $null
+          if ($LASTEXITCODE -eq 0) { throw 'Release v4.2.0 already exists; refusing to overwrite.' }
+          $notes = @'
+          ORFix Repair v4.2.0 — generic material-layout recognition update.
+
+          ## Changes
+          - Adds automatic recognition for the verified four-slot Diffuse / LightMap / MetalMap / ShadowRamp material layout.
+          - Applies the existing NNFix command only when the complete binding group and referenced resources pass validation.
+          - Recognition is independent of character names, IB hashes and match_first_index values.
+          - Existing ORFix / NNFix, TexFx, Ningguang legacy migration, Face Fix, backup, rollback and bilingual UI workflows are retained.
+
+          ## Safety
+          - Unsupported, incomplete, duplicated or additional texture-slot layouts are skipped for manual review.
+          - This rule does not rewrite texture files, IB or BUF model buffers, texture references or Face Fix data.
+
+          ## Requirements
+          - Windows 10/11 x64 and Microsoft WebView2 Runtime.
+          - ORFix.ini remains an external game-side dependency for ORFix / NNFix commands.
+          - TexFx-equipped Mods may require TexFx.
+
+          ## Validation
+          - Node.js bilingual regression test.
+          - Go engine tests and go vet.
+          - The release EXE is the exact user-tested local build; its SHA-256 was verified before upload.
+
+          SHA-256: 84b13d2a1e21299afb7ff4d255a4a203e6d628caa9fc19176bc2e445de9e8988
+          '@
+          $target = (git rev-parse HEAD^).Trim()
+          gh release create v4.2.0 'build/bin/ORFixRepair_v4_2_0.exe' 'build/bin/ORFixRepair_v4_2_0.exe.sha256' --target $target --title 'ORFix Repair v4.2.0' --notes $notes
+          if ($LASTEXITCODE -ne 0) { throw 'GitHub Release creation failed.' }
