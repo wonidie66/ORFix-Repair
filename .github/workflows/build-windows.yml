@@ -1,4 +1,4 @@
-name: Build ORFix Repair Windows EXE
+name: Build ORFix Repair v4.2.0 Windows EXE
 on:
   workflow_dispatch:
   push:
@@ -23,15 +23,17 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: '22'
-      - name: Test bilingual path preservation
+      - name: Test bilingual path preservation and diagnostics
         run: node frontend/tests/language.test.cjs
-      - name: Install Go 1.26
+      - name: Install Go 1.26.4
         uses: actions/setup-go@v5
         with:
-          go-version: '1.26.x'
+          go-version: '1.26.4'
           cache: false
       - name: Engine tests
         run: go test -count=1 ./engine
+      - name: Go vet
+        run: go vet ./engine
       - name: Download Wails dependencies
         run: go mod download
       - name: Install Wails v2.17.1
@@ -42,23 +44,26 @@ jobs:
           $wails = Join-Path ((go env GOPATH).Trim()) 'bin/wails.exe'
           & $wails build -platform windows/amd64 -s -clean
           if ($LASTEXITCODE -ne 0) { throw 'Wails build failed' }
-          if (!(Test-Path 'build/bin/ORFixRepair_v4_1_2.exe')) { throw 'EXE missing' }
-          Get-FileHash -Algorithm SHA256 'build/bin/ORFixRepair_v4_1_2.exe'
+          $exe = 'build/bin/ORFixRepair_v4_2_0.exe'
+          if (!(Test-Path $exe)) { throw "EXE missing: $exe" }
+          $hash = (Get-FileHash -Algorithm SHA256 $exe).Hash.ToLowerInvariant()
+          "$hash  ORFixRepair_v4_2_0.exe" | Set-Content -Path 'build/bin/ORFixRepair_v4_2_0.exe.sha256' -Encoding ascii
+          Write-Host "SHA-256: $hash"
       - name: Package versioned source archive
         shell: pwsh
         run: |
           New-Item -ItemType Directory -Force -Path 'build/source' | Out-Null
-          git archive --format=zip --output='build/source/ORFixRepair_V4.1.2_Source.zip' refs/tags/v4.1.2
-          if (!(Test-Path 'build/source/ORFixRepair_V4.1.2_Source.zip')) { throw 'Source archive missing' }
+          git archive --format=zip --output='build/source/ORFixRepair_V4.2.0_Source.zip' HEAD
+          if (!(Test-Path 'build/source/ORFixRepair_V4.2.0_Source.zip')) { throw 'Source archive missing' }
       - name: Upload source archive
         uses: actions/upload-artifact@v4
         with:
-          name: ORFixRepair_V4.1.2_Source
-          path: build/source/ORFixRepair_V4.1.2_Source.zip
+          name: ORFixRepair_V4.2.0_Source
+          path: build/source/ORFixRepair_V4.2.0_Source.zip
           if-no-files-found: error
-      - name: Upload real native EXE artifact
+      - name: Upload Windows x64 EXE artifact
         uses: actions/upload-artifact@v4
         with:
-          name: ORFixRepair_v4_1_2_Wails_Windows_x64
-          path: build/bin/ORFixRepair_v4_1_2.exe
+          name: ORFixRepair_v4_2_0_Wails_Windows_x64
+          path: build/bin/ORFixRepair_v4_2_0.exe
           if-no-files-found: error
