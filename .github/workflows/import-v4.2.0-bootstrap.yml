@@ -1,4 +1,4 @@
-name: Import and publish ORFix Repair v4.2.0
+name: Import ORFix Repair v4.2.0 source
 
 on:
   push:
@@ -32,7 +32,7 @@ jobs:
       - name: Download and import V4.2.0 source
         shell: pwsh
         env:
-          SOURCE_ZIP_URL: 'https://sdmntprindiasocentral.oaiusercontent.com/files/00000000-7280-8211-bf0e-4e9bd46076d9/raw?se=2026-11-23T19%3A11%3A36Z&sp=r&sv=2026-06-06&sr=b&scid=0b958002-0073-5690-b745-a82bd4fc2375&skoid=54865dd2-31dc-44cc-a877-635aa4250446&sktid=a48cca56-e6da-484e-a814-9c849652bcb3&skt=2026-11-23T01%3A55%3A32Z&ske=2026-11-24T01%3A55%3A32Z&sks=b&skv=2026-06-06&sig=MVtxMAj04dp48w67VYQ%2BVxd9ulwOafI%2BrgNjKbBtv/c%3D'
+          SOURCE_ZIP_URL: 'https://sdmntprseasia.oaiusercontent.com/files/00000000-be88-8207-acd3-b89592d1de82/raw?se=2026-11-23T19%3A18%3A08Z&sp=r&sv=2026-06-06&sr=b&scid=e78635a0-a6b1-5e8e-9965-62e571c95a74&skoid=54865dd2-31dc-44cc-a877-635aa4250446&sktid=a48cca56-e6da-484e-a814-9c849652bcb3&skt=2026-11-23T02%3A34%3A23Z&ske=2026-11-24T02%3A34%3A23Z&sks=b&skv=2026-06-06&sig=yoKKIYAw8xnV%2BR5ccZW6ghC72gveyL/WtvRMnAM2GKI%3D'
         run: |
           $sourceZip = Join-Path $env:RUNNER_TEMP 'ORFixRepair_V4.2.0_Generic_Source.zip'
           $extractDir = Join-Path $env:RUNNER_TEMP 'orfix-v4.2.0-source'
@@ -40,7 +40,7 @@ jobs:
           Expand-Archive -LiteralPath $sourceZip -DestinationPath $extractDir -Force
           $sourceRoot = Join-Path $extractDir 'ORFixRepair_V4.2.0'
           if (!(Test-Path -LiteralPath $sourceRoot)) { throw 'V4.2.0 source root not found in archive.' }
-          robocopy $sourceRoot $env:GITHUB_WORKSPACE /MIR /XD (Join-Path $env:GITHUB_WORKSPACE '.git')
+          robocopy $sourceRoot $env:GITHUB_WORKSPACE /MIR /XD (Join-Path $env:GITHUB_WORKSPACE '.git') (Join-Path $sourceRoot '.github')
           if ($LASTEXITCODE -ge 8) { throw "Source import failed; robocopy exit code $LASTEXITCODE" }
           $global:LASTEXITCODE = 0
 
@@ -122,7 +122,7 @@ jobs:
       - name: Download and verify user-tested Windows EXE
         shell: pwsh
         env:
-          EXE_DOWNLOAD_URL: 'https://sdmntprseasia.oaiusercontent.com/files/00000000-aff8-8207-8d01-e4e51565a0c2/raw?se=2026-11-23T19%3A11%3A36Z&sp=r&sv=2026-06-06&sr=b&scid=e56ef71f-96a4-5ba3-b4da-a62116ad682d&skoid=54865dd2-31dc-44cc-a877-635aa4250446&sktid=a48cca56-e6da-484e-a814-9c849652bcb3&skt=2026-11-23T02%3A34%3A19Z&ske=2026-11-24T02%3A34%3A19Z&sks=b&skv=2026-06-06&sig=B49iQAL9io%2BW%2BNLEKmf7cerHKhBhyUIM4Bqo55qET5k%3D'
+          EXE_DOWNLOAD_URL: 'https://sdmntprindiasocentral.oaiusercontent.com/files/00000000-67c8-8211-a6c9-f351038e2a06/raw?se=2026-11-23T19%3A18%3A09Z&sp=r&sv=2026-06-06&sr=b&scid=436baafe-0a2c-5314-a7b1-54f07dd451e2&skoid=54865dd2-31dc-44cc-a877-635aa4250446&sktid=a48cca56-e6da-484e-a814-9c849652bcb3&skt=2026-11-22T23%3A53%3A27Z&ske=2026-11-23T23%3A53%3A27Z&sks=b&skv=2026-06-06&sig=9Qu88wRWeeR/vrOstfpzwbNnJDW1GQ%2B3OTlaRb3CLK0%3D'
           EXPECTED_SHA256: '84b13d2a1e21299afb7ff4d255a4a203e6d628caa9fc19176bc2e445de9e8988'
         run: |
           $exe = 'build/bin/ORFixRepair_v4_2_0.exe'
@@ -138,9 +138,6 @@ jobs:
       - name: Commit clean V4.2.0 source tree
         shell: pwsh
         run: |
-          if (Test-Path -LiteralPath '.github/workflows/import-v4.2.0-bootstrap.yml') {
-            Remove-Item -LiteralPath '.github/workflows/import-v4.2.0-bootstrap.yml' -Force
-          }
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
           git add -A
@@ -149,38 +146,3 @@ jobs:
           git push origin HEAD:main
           if ($LASTEXITCODE -ne 0) { throw 'Git push failed.' }
 
-      - name: Publish GitHub Release with the exact tested EXE
-        shell: pwsh
-        env:
-          GH_TOKEN: ${{ github.token }}
-        run: |
-          gh release view v4.2.0 *> $null
-          if ($LASTEXITCODE -eq 0) { throw 'Release v4.2.0 already exists; refusing to overwrite.' }
-          $notes = @'
-          ORFix Repair v4.2.0 — generic material-layout recognition update.
-
-          ## Changes
-          - Adds automatic recognition for the verified four-slot Diffuse / LightMap / MetalMap / ShadowRamp material layout.
-          - Applies the existing NNFix command only when the complete binding group and referenced resources pass validation.
-          - Does not rely on character names, IB hashes or match_first_index values.
-          - Retains existing ORFix / NNFix, TexFx, Ningguang legacy migration, Face Fix, backup, rollback and bilingual UI workflows.
-
-          ## Safety
-          - Unsupported, incomplete, duplicated or additional texture-slot layouts are skipped for manual review.
-          - Texture files and model buffers are not rewritten by this rule.
-
-          ## Requirements
-          - Windows 10/11 x64 and Microsoft WebView2 Runtime.
-          - ORFix.ini remains an external game-side dependency for ORFix / NNFix commands.
-          - TexFx-equipped Mods may require TexFx.
-
-          ## Validation
-          - Node.js bilingual regression test.
-          - Go engine tests and go vet.
-          - The release EXE is the exact user-tested local build; its SHA-256 is verified before upload.
-
-          SHA-256: 84b13d2a1e21299afb7ff4d255a4a203e6d628caa9fc19176bc2e445de9e8988
-          '@
-          $target = (git rev-parse HEAD).Trim()
-          gh release create v4.2.0 'build/bin/ORFixRepair_v4_2_0.exe' 'build/bin/ORFixRepair_v4_2_0.exe.sha256' --target $target --title 'ORFix Repair v4.2.0' --notes $notes
-          if ($LASTEXITCODE -ne 0) { throw 'GitHub Release creation failed.' }
