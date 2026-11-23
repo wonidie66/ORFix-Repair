@@ -1,4 +1,4 @@
-# Third-party notices — ORFix Repair v4.1.2
+# Third-party notices — ORFix Repair v4.2.0
 
 - React / ReactDOM: MIT (notices under `frontend/dist/vendor/LICENSE_React_MIT.txt`).
 - SVG liquid glass adapter based on `yurkagon/react-liquid-glass-svg` (MIT; see bundled `LICENSE_Glass_MIT.txt`).

@@ -1,6 +1,6 @@
 package engine
 import ("fmt"; "os"; "path/filepath"; "strings"; "time")
-const version="4.1.1"
+const version = "4.2.0"
 func rel(root, path string) string {
 	v, e := filepath.Rel(root, path)
 	if e != nil {

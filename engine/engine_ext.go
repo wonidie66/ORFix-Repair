@@ -12,7 +12,7 @@ import (
 // and processes each independent texture binding sequence, including branches
 // and hand-written drawindexed blocks. The three core texture streams remain
 // unchanged; only the ORFix/NNFix call and optional TexFx t69 reset are added.
-// Known mesh-specific fixes run before this generic pass.
+// Verified material-layout classifiers run within this generic pass.
 var (
 	extNamespace = regexp.MustCompile(`(?im)^\s*namespace\s*=\s*([^;\r\n]+)`)
 	extResource  = regexp.MustCompile(`(?i)^\s*ps-t([0-9]+)\s*=\s*(Resource[A-Za-z0-9_.-]+)\s*(?:;.*)?$`)
@@ -125,7 +125,7 @@ func refType(ref string) (stem, kind, variant string, ok bool) {
 			r = r[:idx]
 		}
 	}
-	for _, k := range []string{"normalmap", "diffuse", "lightmap"} {
+	for _, k := range []string{"normalmap", "diffuse", "lightmap", "metalmap", "shadowramp"} {
 		if strings.HasSuffix(r, k) {
 			return strings.ToLower(ref[:len(ref)-len(k)]), k, strings.ToLower(variant), true
 		}
@@ -135,6 +135,11 @@ func refType(ref string) (stem, kind, variant string, ok bool) {
 
 // Classify a pair/triple only after confirming definitions and physical files.
 func classifyBindings(path string, group []binding, resources map[string]string) (string, string) {
+	if matched, reason := classifyFourSlotNNFix(path, group, resources); matched {
+		return "NNFix", ""
+	} else if reason != "" {
+		return "", reason
+	}
 	slots := map[int]binding{}
 	for _, b := range group {
 		if b.slot < 3 {
@@ -176,6 +181,9 @@ func transformEnhanced(path string, content []byte, level string) ([]byte, []str
 	if isKnownPatchedCitlali(path, content) {
 		return nil, nil, nil
 	}
+	// The generic enhanced classifier below handles verified four-slot
+	// Diffuse/LightMap/MetalMap/ShadowRamp materials. No character name, hash,
+	// or first-index signature is hard-coded here.
 	out, baseChanges, baseManual := transformINI(path, content)
 	if len(out) == 0 {
 		out = content
@@ -285,7 +293,9 @@ func transformEnhanced(path string, content []byte, level string) ([]byte, []str
 			if m := extResource.FindStringSubmatch(val); m != nil {
 				slot := 0
 				fmt.Sscanf(m[1], "%d", &slot)
-				if slot <= 2 {
+				if slot != 69 {
+					// Keep slots beyond t3 too: a fifth slot must prevent an unsafe
+					// four-slot classification rather than being silently ignored.
 					// A new t0 begins a fresh material binding after an earlier completed set.
 					if slot == 0 && len(bindings) > 0 {
 						flush(i)
@@ -328,19 +338,24 @@ func transformEnhanced(path string, content []byte, level string) ([]byte, []str
 	}
 	filtered := []string{}
 	for _, m := range baseManual {
-		patched := false
+		resolvedOrExplained := false
 		for _, c := range changes {
 			i := strings.Index(c, " [")
-			if i < 0 {
-				continue
-			}
-			sec := c[:i]
-			if strings.HasPrefix(m, sec+"：") {
-				patched = true
+			if i >= 0 && strings.HasPrefix(m, c[:i]+"：") {
+				resolvedOrExplained = true
 				break
 			}
 		}
-		if !patched {
+		if !resolvedOrExplained {
+			for _, detail := range manual {
+				i := strings.Index(detail, " [")
+				if i >= 0 && strings.HasPrefix(m, detail[:i]+"：") {
+					resolvedOrExplained = true
+					break
+				}
+			}
+		}
+		if !resolvedOrExplained {
 			filtered = append(filtered, m)
 		}
 	}

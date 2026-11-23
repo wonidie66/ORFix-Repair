@@ -171,6 +171,12 @@
       ['接入 ORFix', 'Enabled ORFix'],
       ['文件过大，跳过', 'File too large; skipped'],
       ['分支内贴图已匹配，绘制前插入', 'Branch texture layout matched; inserted before drawing'],
+      ['四槽位 Diffuse + LightMap + MetalMap + ShadowRamp', 'Four-slot Diffuse + LightMap + MetalMap + ShadowRamp'],
+      ['四槽位材质结构不完整或资源校验未通过，未修改', 'Four-slot material layout is incomplete or resource validation failed; left unchanged'],
+      ['Diffuse/LightMap/MetalMap/ShadowRamp 绑定不完整，未修改', 'Diffuse/LightMap/MetalMap/ShadowRamp bindings are incomplete; left unchanged'],
+      ['四张贴图资源前缀不一致，未修改', 'The four texture resource prefixes do not match; left unchanged'],
+      ['贴图资源文件缺失，未修改', 'A texture resource file is missing; left unchanged'],
+      ['已有 NNFix 调用位置异常，未重复插入', 'An existing NNFix call is misplaced; no duplicate was inserted'],
       ['贴图布局不明确', 'Texture layout is ambiguous'],
       ['透明配置不满足严格自动修复条件', 'Transparency configuration does not meet strict auto-fix criteria'],
       ['保留原样', 'left unchanged'],
@@ -361,7 +367,7 @@
 
   function syncDocument() {
     document.documentElement.lang = language === 'en' ? 'en' : 'zh-CN';
-    document.title = language === 'en' ? 'ORFix Repair · English V4.1.2' : 'ORFix Repair · 中文 V4.1.2';
+    document.title = language === 'en' ? 'ORFix Repair · English V4.2.0' : 'ORFix Repair · 中文 V4.2.0';
   }
   syncDocument();
 

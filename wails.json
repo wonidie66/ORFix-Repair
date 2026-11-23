@@ -1,6 +1,6 @@
 {
-  "name": "ORFix Repair V4.1.2",
-  "outputfilename": "ORFixRepair_v4_1_2",
+  "name": "ORFix Repair V4.2.0",
+  "outputfilename": "ORFixRepair_v4_2_0",
   "frontend:dir": "frontend",
   "frontend:install": "",
   "frontend:build": "",

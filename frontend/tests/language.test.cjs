@@ -52,6 +52,9 @@ for (const folderPath of paths) {
 
 assert.equal(i18n.translateText('浏览目录'), 'Browse Folder',
   'ordinary UI labels should still be translated');
+const fourSlotLog = 'TextureOverrideAsterBody [NNFix] 分支内贴图已匹配，绘制前插入 NNFix';
+assert.match(i18n.translateText(fourSlotLog), /Branch texture layout matched; inserted before drawing/,
+  'the generic four-slot repair log should be translated without changing technical identifiers');
 assert.match(i18n.translateText('这是未收录的诊断信息'), /Additional diagnostic needs manual review/,
   'unknown Chinese diagnostics should retain the existing safe fallback');
 

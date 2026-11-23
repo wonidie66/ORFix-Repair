@@ -3,6 +3,7 @@ package engine
 import (
 	"os"
 	"path/filepath"
+	"strconv"
 	"strings"
 )
 
@@ -64,17 +65,8 @@ func diagnoseINI(path string, content []byte) []string {
 		for i := sec.start + 1; i < sec.end; i++ {
 			v := normLine(lines[i])
 			if m := reTex.FindStringSubmatch(v); m != nil && m[2] == "" {
-				slot := -1
-				if m[3] == "0" || m[3] == "1" || m[3] == "2" {
-					if m[3] == "0" {
-						slot = 0
-					} else if m[3] == "1" {
-						slot = 1
-					} else {
-						slot = 2
-					}
-				}
-				if slot >= 0 {
+				slot, err := strconv.Atoi(m[3])
+				if err == nil && slot != 69 {
 					group = append(group, binding{line: i, slot: slot, ref: m[4]})
 				}
 			}
@@ -106,7 +98,13 @@ func diagnoseINI(path string, content []byte) []string {
 		}
 		switch kind {
 		case "NNFix":
-			if hasNN {
+			if isFourSlotNNFixGroup(path, group, resources) {
+				if hasNN {
+					out = append(out, sec.name+"：四槽位 Diffuse + LightMap + MetalMap + ShadowRamp，已存在 NNFix")
+				} else {
+					out = append(out, sec.name+"：四槽位 Diffuse + LightMap + MetalMap + ShadowRamp，缺少 NNFix；满足资源校验，可作为 NNFix 修复候选")
+				}
+			} else if hasNN {
 				out = append(out, sec.name+"："+role+"双贴图 Diffuse + LightMap，已存在 NNFix；若仍发绿，需进一步检查 Shader、倒影或贴图实际语义")
 			} else {
 				out = append(out, sec.name+"："+role+"双贴图 Diffuse + LightMap，缺少 NNFix；满足资源校验，可作为 NNFix 修复候选")

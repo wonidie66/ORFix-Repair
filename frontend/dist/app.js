@@ -1,4 +1,4 @@
-/* ORFix Repair V4.1.1 – React UI. No JSX/transpiler required in shipped bundle.
+/* ORFix Repair V4.2.0 – React UI. No JSX/transpiler required in shipped bundle.
    Wails calls go.main.App; a browser falls back to explicit simulation mode. */
 (function () {
   'use strict';
@@ -126,7 +126,7 @@
         h('header',{className:'app-header'},
           h('div',{className:'brand'},
             h('img',{src:image('logo'),alt:'ORFix',className:'brand-logo'}),
-            h('div',{className:'brand-text'},h('strong',null,'ORFix Repair'),h('small',null,'V4.1.2'))),
+            h('div',{className:'brand-text'},h('strong',null,'ORFix Repair'),h('small',null,'V4.2.0'))),
           h('div',{className:'header-tools'},
             demo ? h('details',{className:'demo-options header-demo'},h('summary',null,'切换演示结果'),h('div',{className:'demo-picks'},
               [['success','普通成功'],['risk','疑似面部风险'],['failed','修复失败']].map(([v,lab])=>h('button',{key:v,className:scenario===v?'selected':'',onClick:()=>this.setState({scenario:v,phase:'idle',result:null,logsOpen:false})},lab)))) : null,
