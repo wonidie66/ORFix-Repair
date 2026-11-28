@@ -1,14 +1,11 @@
-# Third-party notices — ORFix Repair v4.2.0
+# Third-party notices and distribution boundaries
 
-- React / ReactDOM: MIT (notices under `frontend/dist/vendor/LICENSE_React_MIT.txt`).
-- SVG liquid glass adapter based on `yurkagon/react-liquid-glass-svg` (MIT; see bundled `LICENSE_Glass_MIT.txt`).
-- Wails v2.17.1: https://github.com/wailsapp/wails
-- LeoTools / ORFix.ini: https://github.com/leotorrez/LeoTools (external dependency, not bundled).
+- Qt for Python / PySide6: https://doc.qt.io/qtforpython-6/ ; https://www.qt.io/licensing/ . Review the actual installed Qt module licenses and applicable distribution obligations before distributing a bundled executable.
+- Python: https://www.python.org/ ; PyInstaller: https://pyinstaller.org/ (build tool, not bundled here as source).
+- LeoTools / ORFix.ini: https://github.com/leotorrez/LeoTools (external runtime dependency, not bundled); historical Ningguang mapping reference: LeoTools/Fix4.4.py.
 - TexFx: https://github.com/SinsOfSeven/TexFx (external dependency, not bundled).
 - Gi-FaceFix: https://github.com/Sanddino00/Gi-FaceFix (upstream reference).
-- Source-level historical Ningguang fix reference: `LeoTools/Fix4.4.py`.
-- `engine/known_fixes/Citlali_high_priest_verified_v2.ini`: character-specific example; original Mod author and permission for redistribution require confirmation.
-- `frontend/dist/assets/*.png` and `build/windows/icon.ico`: check third-party artwork provenance separately.
-- `frontend/dist/language.svg`: icon provided by the project owner for this update; its separate license has not been confirmed.
+- `engine/known_fixes/Citlali_high_priest_verified_v2.ini` and original status illustrations/icon were already present in earlier public project versions. Original authorship and redistribution permissions have not been independently verified. No new grant of rights is implied. The project-wide source license remains unselected; do not assume MIT licensing for the whole project or third-party assets.
+- Runtime liquid glass shader is the project's native QML/GLSL implementation. No legacy React/Wails vendor files are included in V5.
 
-Publishing source does not transfer copyright to third-party assets. The project-wide source license remains unselected pending asset review.
+Public source availability does not establish redistribution rights for third-party assets. A single-file executable does not by itself fulfill Qt LGPL obligations: applicable notices, replacement/relinking and other requirements must be assessed against the actual distribution and license.

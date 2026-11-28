@@ -1,0 +1,154 @@
+[
+  {
+    "rule_id": "MAT-001",
+    "name": "标准双槽位 NNFix",
+    "mechanism": "已知 Diffuse/LightMap 输入约定，补充 NNFix。",
+    "version": "5.0.0",
+    "evidence_status": "legacy implementation / static golden regression; runtime verification varies",
+    "specification": "docs/修复原理与维护.md",
+    "default_stage": "normal",
+    "limitations": "No inferred runtime Shader slot or visual guarantee."
+  },
+  {
+    "rule_id": "MAT-002",
+    "name": "标准三槽位 ORFix",
+    "mechanism": "已知 NormalMap/Diffuse/LightMap 输入约定，恢复缺失绑定或补充 ORFix。",
+    "version": "5.0.0",
+    "evidence_status": "legacy implementation / static golden regression; runtime verification varies",
+    "specification": "docs/修复原理与维护.md",
+    "default_stage": "normal",
+    "limitations": "No inferred runtime Shader slot or visual guarantee."
+  },
+  {
+    "rule_id": "MAT-003",
+    "name": "四槽位 NNFix",
+    "mechanism": "已验证 Diffuse/LightMap/MetalMap/ShadowRamp 布局。",
+    "version": "5.0.0",
+    "evidence_status": "legacy implementation / static golden regression; runtime verification varies",
+    "specification": "docs/修复原理与维护.md",
+    "default_stage": "normal",
+    "limitations": "No inferred runtime Shader slot or visual guarantee."
+  },
+  {
+    "rule_id": "MAT-004",
+    "name": "复杂静态材质 ORFix",
+    "mechanism": "核实三贴图语义及绘制路径，保留辅助槽位；必要时纠正顺序。",
+    "version": "5.0.0",
+    "evidence_status": "legacy implementation / static golden regression; runtime verification varies",
+    "specification": "docs/修复原理与维护.md",
+    "default_stage": "normal",
+    "limitations": "No inferred runtime Shader slot or visual guarantee."
+  },
+  {
+    "rule_id": "MAT-006",
+    "name": "动态材质 ORFix",
+    "mechanism": "验证 IB/VB 关联及每个互斥材质路径，补充带条件保护的 ORFix。",
+    "version": "5.0.0",
+    "evidence_status": "legacy implementation / static golden regression; runtime verification varies",
+    "specification": "docs/修复原理与维护.md",
+    "default_stage": "normal",
+    "limitations": "No inferred runtime Shader slot or visual guarantee."
+  },
+  {
+    "rule_id": "MAT-007",
+    "name": "CommandList 材质分析",
+    "mechanism": "追踪本地命令调用及独立绑定组，避免跨分支拼接。",
+    "version": "5.0.0",
+    "evidence_status": "legacy implementation / static golden regression; runtime verification varies",
+    "specification": "docs/修复原理与维护.md",
+    "default_stage": "normal",
+    "limitations": "No inferred runtime Shader slot or visual guarantee."
+  },
+  {
+    "rule_id": "TEX-001",
+    "name": "安全 TexFx 兼容",
+    "mechanism": "已知双贴图与单一透明遮罩调用，保留遮罩及绘制。",
+    "version": "5.0.0",
+    "evidence_status": "legacy implementation / static golden regression; runtime verification varies",
+    "specification": "docs/修复原理与维护.md",
+    "default_stage": "normal",
+    "limitations": "No inferred runtime Shader slot or visual guarantee."
+  },
+  {
+    "rule_id": "FACE-001",
+    "name": "面部 Diffuse",
+    "mechanism": "使用 this 针对匹配资源替换，避免固定槽位依赖。",
+    "version": "5.0.0",
+    "evidence_status": "legacy implementation / static golden regression; runtime verification varies",
+    "specification": "docs/修复原理与维护.md",
+    "default_stage": "face_confirmed",
+    "limitations": "No inferred runtime Shader slot or visual guarantee."
+  },
+  {
+    "rule_id": "FACE-002+003",
+    "name": "多变体面部与 LightMap",
+    "mechanism": "伊涅芙 B 组合修复实测有效；停用额外固定绑定，单项效果未隔离。",
+    "version": "5.0.0",
+    "evidence_status": "legacy implementation / static golden regression; runtime verification varies",
+    "specification": "docs/修复原理与维护.md",
+    "default_stage": "face_confirmed",
+    "limitations": "No inferred runtime Shader slot or visual guarantee."
+  },
+  {
+    "rule_id": "MIG-001",
+    "name": "凝光历史迁移",
+    "mechanism": "严格五组 Hash 签名与 119 项 Blend 映射联动。",
+    "version": "5.0.0",
+    "evidence_status": "legacy implementation / static golden regression; runtime verification varies",
+    "specification": "docs/修复原理与维护.md",
+    "default_stage": "normal",
+    "limitations": "No inferred runtime Shader slot or visual guarantee."
+  },
+  {
+    "rule_id": "TEX-RECIPE-001",
+    "name": "茜特菈莉专项",
+    "mechanism": "只接受历史精确 SHA-256 和必需资源。",
+    "version": "5.0.0",
+    "evidence_status": "legacy implementation / static golden regression; runtime verification varies",
+    "specification": "docs/修复原理与维护.md",
+    "default_stage": "normal",
+    "limitations": "No inferred runtime Shader slot or visual guarantee."
+  },
+  {
+    "rule_id": "SAFE-001",
+    "name": "安全检查",
+    "mechanism": "证据不足或配置不支持，保留原文件。",
+    "version": "5.0.0",
+    "evidence_status": "legacy implementation / static golden regression; runtime verification varies",
+    "specification": "docs/修复原理与维护.md",
+    "default_stage": "normal",
+    "limitations": "No inferred runtime Shader slot or visual guarantee."
+  },
+  {
+    "rule_id": "MAT-005",
+    "name": "Outline 辅助槽位",
+    "mechanism": "保留已验证 t70 Outline",
+    "implemented_with": "MAT-004/MAT-006",
+    "specification": "docs/修复原理与维护.md",
+    "version": "5.0.0"
+  },
+  {
+    "rule_id": "INI-001",
+    "name": "局部语法纠正",
+    "mechanism": "严格互斥条件或已使用 DDS 声明单字符",
+    "implemented_with": "MAT-004",
+    "specification": "docs/修复原理与维护.md",
+    "version": "5.0.0"
+  },
+  {
+    "rule_id": "FACE-002",
+    "name": "多变体 Diffuse",
+    "mechanism": "保留切换路径并按匹配目标替换",
+    "implemented_with": "FACE-002+003",
+    "specification": "docs/修复原理与维护.md",
+    "version": "5.0.0"
+  },
+  {
+    "rule_id": "FACE-003",
+    "name": "LightMap 兼容",
+    "mechanism": "仅停用已验证组合中的额外固定槽位",
+    "implemented_with": "FACE-002+003",
+    "specification": "docs/修复原理与维护.md",
+    "version": "5.0.0"
+  }
+]
